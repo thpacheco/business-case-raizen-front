@@ -27,6 +27,8 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
   const [cep, setCep] = useState('');
+  const [logradouro, setlogradouro] = useState('');
+  const [bairro, setbairro] = useState('');
   const [visibleMsg, setvisibleMsg] = useState(false);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ export default function Home() {
     setIdCliente(bindCliente.idCliente)
     setNome(bindCliente.nome)
     setEmail(bindCliente.email)
-    setDataNascimento(bindCliente.dataNascimento.substring(0,10))
+    setDataNascimento(bindCliente.dataNascimento.substring(0, 10))
     setCep(bindCliente.cep)
   }
   const BindMsgNotification = () => {
@@ -86,6 +88,13 @@ export default function Home() {
     setTimeout(() => {
       setvisibleMsg(false);
     }, 3000);
+  }
+  const GetCepCorreios = (cep: string) => {
+    ClienteService.getCepCorreios(cep.replace('-', '')).then(
+      (response) => {
+        setlogradouro(response.data.logradouro)
+        setbairro(response.data.bairro)
+      });
   }
   const ClienteSalve = () => {
     const objCreate = clienteCreate;
@@ -165,7 +174,28 @@ export default function Home() {
               fullWidth
               required
               value={cep}
+              onBlur={(e) => GetCepCorreios(e.target.value)}
               onChange={(e) => setCep(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Endereço"
+              variant="outlined"
+              fullWidth
+              required
+              value={logradouro}
+              onChange={(e) => setCep(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Bairro"
+              variant="outlined"
+              fullWidth
+              required
+              value={bairro}
+              onChange={(e) => setbairro(e.target.value)}
             />
           </Grid>
           <Grid item xs={10}>

@@ -51,6 +51,17 @@ class ClienteService {
 
     }
 
+    getCepCorreios(cep: string) {
+        const header = authHeader();
+        return axios.get(API_URL + "Cliente/cep/" + cep, header)
+            .then(response => {
+                return response.data
+            })
+            .catch((error) => {
+                console.log('error ' + error);
+            });
+
+    }
     deleteCliente(id: number) {
         const header = authHeader();
          return axios.delete(API_URL + "Cliente/" + id, header)
